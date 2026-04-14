@@ -13,7 +13,7 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import 'dotenv/config';
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
+import authRoutes from "./src/modules/auth/auth.routes.js";
 const port = process.env.PORT || 8080;
 
 // Equivalent to mongoose connection
@@ -31,8 +31,9 @@ const pool = new pg.Pool({
   idleTimeoutMillis: 0,
 });
 
-const app = new express();
+const app = express();
 app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -42,6 +43,9 @@ app.get("/seats", async (req, res) => {
   const result = await pool.query("select * from seats"); // equivalent to Seats.find() in mongoose
   res.send(result.rows);
 });
+
+//end points
+app.use("/api/auth", authRoutes);
 
 //book a seat give the seatId and your name
 

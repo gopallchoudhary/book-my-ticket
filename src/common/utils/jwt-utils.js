@@ -32,10 +32,10 @@ const verifyRefreshToken = (token) => {
     return jwt.verify(token, process.env.JWT_SECRET)
 }
 
-export default {
+export {
     generateResetToken,
     generateAccessToken,
     verifyAccessToken,
     generateRefreshToken,
-    verifyRefreshToken  
+    verifyRefreshToken
 }

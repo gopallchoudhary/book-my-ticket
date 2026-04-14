@@ -10,11 +10,11 @@ class BaseDto {
         });
 
         if (error) {
-            const errorMessage = error.details.map((el) => el.message).join(",");
-            return { error: errorMessage, value: null};
-        } else {
-            return { error: null, value };
+            const errors = error.details.map((d) => d.message)
+            return { errors, value: null }
         }
+
+        return { errors: null, value }
     }
 }
 

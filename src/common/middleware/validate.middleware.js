@@ -5,7 +5,7 @@ const validate = (Dtoclass) => {
     return (req, res, next) => {
         const { errors, value } = Dtoclass.validate(req.body);
         if (errors) {
-            throw ApiError.badRequest(errors.join(","));
+            throw ApiError.badRequest(errors.join("; "));
         }
         req.body = value;
         next();
