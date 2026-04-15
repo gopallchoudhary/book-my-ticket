@@ -14,6 +14,8 @@ import cors from "cors";
 import 'dotenv/config';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import authRoutes from "./src/modules/auth/auth.routes.js";
+import cookieParser from "cookie-parser";
+import { authenticationMiddleware } from "./src/modules/auth/auth.middleware.js";
 const port = process.env.PORT || 8080;
 
 // Equivalent to mongoose connection
@@ -34,6 +36,8 @@ const pool = new pg.Pool({
 const app = express();
 app.use(cors());
 app.use(express.json());
+// app.use(express.urlencoded({extended: true}))
+// app.use(cookieParser)
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -49,7 +53,7 @@ app.use("/api/auth", authRoutes);
 
 //book a seat give the seatId and your name
 
-app.put("/:id/:name", async (req, res) => {
+app.put("/:id/:name", authenticationMiddleware, async (req, res) => {
   try {
     const id = req.params.id;
     const name = req.params.name;
